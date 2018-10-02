@@ -247,8 +247,8 @@ public class CrimeFragment extends Fragment {
                 c.close();
             }
         } else if (requestCode == REQUEST_PHOTO) {
-            mCrime.PicConuterAdd();
             updatePhotoView();
+            mCrime.PicConuterAdd();
         }
     }
 
@@ -287,6 +287,7 @@ public class CrimeFragment extends Fragment {
         for(File file : mPhotoFiles ){
             bitmaps.add(PictureUtils.getScaledBitmap(file.getPath(),getActivity()));
         }
+
         for(ImageView image :imageViews){
             try{
                 image.setImageBitmap(bitmaps.get(counter));
@@ -295,19 +296,22 @@ public class CrimeFragment extends Fragment {
             }
             counter++;
         }
+
         if(checkBox.isChecked()) {
             FaceDetector faceDetector = new FaceDetector.Builder(getContext()).
                     setTrackingEnabled(false)
                     .setLandmarkType(FaceDetector.ALL_LANDMARKS)
                     .setMode(FaceDetector.FAST_MODE)
                     .build();
+            if(!faceDetector.isOperational()){
+                Toast.makeText(getActivity(),"Face detector can not be set up on your device!",Toast.LENGTH_SHORT).show();
+            }
             try {
-                Frame frame = new Frame.Builder().setBitmap(bitmaps.get((mCrime.getPicCounter()-1)%4)).build();
+                Frame frame = new Frame.Builder().setBitmap(bitmaps.get(mCrime.getPicCounter()%4)).build();
                 SparseArray<Face> sparseArray = faceDetector.detect(frame);
                 NumberOfFace.setText(Integer.toString(sparseArray.size())+" Faces Detected");
-                System.out.println(bitmaps.size());
             } catch (IndexOutOfBoundsException e) {
-                System.out.println("Just for test!");
+                System.out.println("No photo yet!");
             }
         }else{
             NumberOfFace.setText("");

@@ -76,15 +76,16 @@ public class Crime {
     public ArrayList<String> getAllPhotoFilename(){
 
         int counter = 0;
+
         ArrayList filenames = new ArrayList<String>();
-        if(this.getPicCounter()>=4){
+        if(this.getPicCounter()>=3){
             counter =3;
         }else {
             counter = this.getPicCounter();
         }
         for (int i = 0; i <=counter; i++) {
                 filenames.add("IMG_" + getId().toString() + i + ".jpg");
-            }
+        }
         return filenames;
     }
 }
